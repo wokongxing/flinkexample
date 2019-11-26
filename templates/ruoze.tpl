@@ -1,0 +1,1 @@
+$Func{numRand(10)},$Dic{name}$Func{intRand(10000)},$Func{intRand(10,50)},$Dic{sex}

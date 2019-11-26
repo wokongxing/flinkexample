@@ -1,0 +1,6 @@
+name=xiaoming|||hanmeimei|||lilei
+sex=0|||1
+reqUrl=http://www.abc.com/a/b/c|||http://www.def.com/d/e/f
+tmp=$Func{intRand(1000000000, 1999999999)}
+b=testVar
+ot=$Func{intRand(2)}
