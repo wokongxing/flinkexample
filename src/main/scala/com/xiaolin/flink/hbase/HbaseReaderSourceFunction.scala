@@ -1,4 +1,4 @@
-package com.xiaolin.flink.work.work01
+package com.xiaolin.flink.hbase
 
 import com.xiaolin.flink.utils.HbaseUtil
 import org.apache.flink.configuration.Configuration

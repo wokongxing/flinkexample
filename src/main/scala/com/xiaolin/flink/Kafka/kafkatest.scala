@@ -1,4 +1,4 @@
-package com.xiaolin.flink.Test
+package com.xiaolin.flink.Kafka
 
 import java.util
 import java.util.Properties
@@ -82,7 +82,6 @@ object kafkatest {
       val message = new StringBuffer
       message.append("id"+a).append("\t")
         .append(domains(ram.nextInt(3)))
-      //println(message,ram.nextInt(3))
       productor.send("ssckafka",message.toString)
     }
   }

@@ -1,4 +1,4 @@
-package com.xiaolin.flink.flink02
+package com.xiaolin.flink.source
 
 import java.sql.{Connection, PreparedStatement}
 

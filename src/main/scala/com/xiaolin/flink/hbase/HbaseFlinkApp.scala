@@ -1,4 +1,4 @@
-package com.xiaolin.flink.work.work01
+package com.xiaolin.flink.hbase
 
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.api.scala._

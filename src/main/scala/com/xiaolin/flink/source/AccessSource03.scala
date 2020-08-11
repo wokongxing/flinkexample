@@ -1,4 +1,4 @@
-package com.xiaolin.flink.flink02
+package com.xiaolin.flink.source
 
 import com.xiaolin.flink.entity.Access
 import org.apache.flink.configuration.Configuration
