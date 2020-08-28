@@ -1,8 +1,14 @@
-package com.xiaolin.flink.stream
+package com.xiaolin.flink.window
 
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.windowing.time.Time
 import org.apache.flink.streaming.api.scala._
+/**
+ * @program: flink-example
+ * @description:
+ * @author: linzy
+ * @create: 2020-08-27 16:30
+ **/
 object WindowWordCountStreamApp {
 
 

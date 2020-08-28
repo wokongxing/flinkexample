@@ -43,18 +43,21 @@ package com.xiaolin.flink.Kafka
 
       keyedStream.sum(1).keyBy(0)
         .fold(new mutable.HashMap[String, Int], new FoldFunction[Tuple2[String,Int], mutable.HashMap[String, Int]]() {
-        @throws[Exception]
-        override def fold(accumulator: mutable.HashMap[String, Int], value: Tuple2[String,Int]): mutable.HashMap[String, Int] = {
-          accumulator += (value._1->value._2)
-        }
+
+          @throws[Exception]
+          override def fold(accumulator: mutable.HashMap[String, Int], value: Tuple2[String,Int]): mutable.HashMap[String, Int] = {
+            accumulator += (value._1->value._2)
+          }
+
       }).addSink(new SinkFunction[mutable.HashMap[String, Int]]() {
-        @throws[Exception]
-        override def invoke(value: mutable.HashMap[String, Int], context: SinkFunction.Context[_]): Unit = { // 每个类型的商品成交量
-          //商品分类数量
-          println(value)
-          // 商品成交总量
-          println(value)
-        }
+
+          @throws[Exception]
+          override def invoke(value: mutable.HashMap[String, Int], context: SinkFunction.Context[_]): Unit = { // 每个类型的商品成交量
+            //商品分类数量
+            println(value)
+            // 商品成交总量
+            println(value)
+          }
       })
       env.execute
     }

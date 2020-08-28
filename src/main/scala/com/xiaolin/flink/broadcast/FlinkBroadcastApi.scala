@@ -1,16 +1,12 @@
-package com.xiaolin.flink.flink03
+package com.xiaolin.flink.broadcast
 
 import java.util.Properties
 
-import org.apache.flink.api.common.serialization.SimpleStringSchema
-import org.apache.flink.streaming.api.functions.co.CoFlatMapFunction
+import com.xiaolin.flink.flink03.MysqlSourceApp
 import org.apache.flink.streaming.api.scala._
-//import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010
-import org.apache.flink.util.Collector
+import org.apache.flink.api.common.state.MapStateDescriptor
 
-import scala.collection.mutable
-
-object FlinkSourceapi {
+object FlinkBroadcastApi {
   def main(args: Array[String]): Unit = {
     val stream = StreamExecutionEnvironment.getExecutionEnvironment
     stream.setParallelism(2)
@@ -25,12 +21,14 @@ object FlinkSourceapi {
 //      (domain, x)
 //    }).map(x=>(x._1,x._2))
 //
-//    //mysql
-    import org.apache.flink.api.common.state.MapStateDescriptor
-    val broadcastStateDesc = new MapStateDescriptor[String, String]("broadcast-state-desc", classOf[String], // 广播数据的key类型
+
+
+    //广播状态类型
+    val broadcastStateDesc = new MapStateDescriptor[String, String]("broadcast-state-desc",
+      classOf[String], // 广播数据的key类型
       classOf[String] // 广播数据的value类型
    )
-   val value = stream.addSource(new MysqlSourceApp).broadcast
+   val value = stream.addSource(new MysqlSourceApp).broadcast(broadcastStateDesc)
 //
 //    logStream.connect(value).flatMap(new CoFlatMapFunction[(String,String),mutable.HashMap[String,String],String]{
 //      var userDomainMap = mutable.HashMap[String, String]()
@@ -53,6 +51,6 @@ object FlinkSourceapi {
 
 
 
-    stream.execute("FlinkSourceapi")
+    stream.execute("FlinkBroadcastApi")
   }
 }
