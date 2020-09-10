@@ -1,13 +1,10 @@
-package com.xiaolin.flink.flink03.core
+package com.xiaolin.flink.sink
 
-import org.apache.flink.api.scala._
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
-import org.apache.flink.streaming.connectors.redis.RedisSink
-import org.apache.flink.streaming.connectors.redis.common.config.FlinkJedisPoolConfig
-
+import org.apache.flink.api.scala._
 /**
   * 若泽数据  www.ruozedata.com
-  * 讲师：PK哥   
+  * 讲师：PK哥
   * 交流群：545916944
   */
 object SinkApp {
@@ -42,9 +39,10 @@ object SinkApp {
 
     //stream.addSink(new RuozedataMySQLSink)
 
-    val conf = new FlinkJedisPoolConfig.Builder().setHost("114.55.94.172").build()
+//    val conf = new FlinkJedisPoolConfig.Builder().setHost("114.55.94.172").build()
+//
+//    stream.addSink(new RedisSink[(String, Double)](conf, new RuozedataRedisSink))
 
-    stream.addSink(new RedisSink[(String, Double)](conf, new RuozedataRedisSink))
 
     env.execute(this.getClass.getSimpleName)
   }

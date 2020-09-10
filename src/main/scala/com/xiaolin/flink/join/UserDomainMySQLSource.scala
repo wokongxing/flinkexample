@@ -1,4 +1,4 @@
-package com.xiaolin.flink.flink03.core
+package com.xiaolin.flink.join
 
 import java.sql.{Connection, PreparedStatement}
 

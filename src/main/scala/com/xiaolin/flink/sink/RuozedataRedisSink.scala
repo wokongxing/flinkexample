@@ -1,4 +1,4 @@
-package com.xiaolin.flink.flink03.core
+package com.xiaolin.flink.sink
 
 import org.apache.flink.streaming.connectors.redis.common.mapper.{RedisCommand, RedisCommandDescription, RedisMapper}
 

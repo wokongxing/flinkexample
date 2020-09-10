@@ -38,8 +38,8 @@ class MySQLSource extends RichSourceFunction[Student]{
   override def run(ctx: SourceFunction.SourceContext[Student]): Unit = {
     val rs = pstmt.executeQuery()
     while(rs.next()){
-      //val student = Student(rs.getInt("id"), rs.getString("name"), rs.getInt("age"))
-     // ctx.collect(student)
+      val student = Student(rs.getInt("id"), rs.getString("name"), rs.getInt("age"))
+      ctx.collect(student)
     }
   }
 }

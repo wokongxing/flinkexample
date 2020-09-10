@@ -31,6 +31,7 @@ object FlinkSourceapi {
       classOf[String] // 广播数据的value类型
    )
    val value = stream.addSource(new MysqlSourceApp).broadcast
+
 //
 //    logStream.connect(value).flatMap(new CoFlatMapFunction[(String,String),mutable.HashMap[String,String],String]{
 //      var userDomainMap = mutable.HashMap[String, String]()
