@@ -10,8 +10,8 @@ object FlinkStream {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
     env.setParallelism(1)
     env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
-    env.fromElements("ni hao wde  w a s d f ga as ds ")
-    System.out.println(env.getExecutionPlan)
+    env.fromElements("ni hao wde  w a s d f ga as ds ").keyBy(0)
+
 
     env.execute(this.getClass.getSimpleName)
   }

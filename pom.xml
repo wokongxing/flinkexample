@@ -2,7 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.xiaolin.flink</groupId>
   <artifactId>flink-example</artifactId>
-  <version>1.0</version>
+    <packaging>pom</packaging>
+    <version>1.0</version>
   <inceptionYear>2008</inceptionYear>
 
 
@@ -83,6 +84,11 @@
     <artifactId>flink-json</artifactId>
     <version>${flink.version}</version>
   </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-hbase_2.11</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
   <dependency>
     <groupId>org.apache.hive</groupId>
     <artifactId>hive-exec</artifactId>

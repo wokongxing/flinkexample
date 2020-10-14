@@ -2,6 +2,7 @@ package com.xiaolin.flink.sink
 
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.api.scala._
+import org.apache.flink.addons.hbase._
 /**
   * 若泽数据  www.ruozedata.com
   * 讲师：PK哥

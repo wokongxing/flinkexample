@@ -9,14 +9,11 @@ import org.apache.flink.streaming.api.CheckpointingMode
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.connectors.kafka.{FlinkKafkaConsumer, FlinkKafkaProducer}
 import org.apache.flink.streaming.api.scala._
-import org.apache.flink.streaming.connectors.kafka.internals.KafkaTopicPartition
-
-import scala.collection.immutable.HashMap
-import scala.collection.mutable
-import scala.collection.JavaConverters._
+import org.apache.flink.api.common.io.ratelimiting.GuavaFlinkConnectorRateLimiter
 
 /**
  * KafKa消费
+ *
  * @author linzy
   *
   */
@@ -53,6 +50,9 @@ object SourceKafkaApp {
 //  自定义topic 动态
     val consumerpattern = new FlinkKafkaConsumer[String](pattern, new SimpleStringSchema(), properties)
 //    consumerpattern.setCommitOffsetsOnCheckpoints(false) //默认值true ,为false时 offset不会自动提交
+
+    val rateLimiter = new GuavaFlinkConnectorRateLimiter
+//    consumerpattern.setRateLimiter() 限流
     env.addSource(consumerpattern).print()
 
     //发送消息到下游
