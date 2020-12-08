@@ -66,7 +66,7 @@ object KafkaUtil {
         val message = new StringBuffer
         message.append("ssid"+a).append("\t")
           .append(domains(ram.nextInt(6)))
-        productor.send("ssckafka1",message.toString)
+        productor.send("test",message.toString)
       }
 
   }

@@ -1,6 +1,6 @@
 package com.xiaolin.flink.source
 
-import java.util.Properties
+import java.util.{Optional, Properties}
 import java.util.regex.Pattern
 
 import org.apache.flink.api.common.serialization.SimpleStringSchema
@@ -8,9 +8,8 @@ import org.apache.flink.runtime.state.filesystem.FsStateBackend
 import org.apache.flink.streaming.api.CheckpointingMode
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.connectors.kafka.{FlinkKafkaConsumer, FlinkKafkaProducer}
-import org.apache.flink.streaming.api.scala._
 import org.apache.flink.api.common.io.ratelimiting.GuavaFlinkConnectorRateLimiter
-
+import org.apache.flink.api.scala._
 /**
  * KafKa消费
  *
@@ -26,6 +25,7 @@ object SourceKafkaApp {
     val properties = new Properties()
     properties.setProperty("bootstrap.servers", "hadoop001:9092")
     properties.setProperty("group.id", "flink-00")
+
     // 自动发现消费的partition变化,topic新增 只能通过正则匹配
     properties.setProperty("flink.partition-discovery.interval-millis",(10 * 1000).toString)
     val topic = "ssckafka";
