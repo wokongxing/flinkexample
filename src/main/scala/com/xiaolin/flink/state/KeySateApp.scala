@@ -31,7 +31,7 @@ object KeySateApp {
         Tuple2(2L, 3L),
         Tuple2(1L, 8L)
       )
-      input
+
       input.keyBy(new KeySelector[Tuple2[Long, Long],Long] {
         override def getKey(value: (Long, Long)): Long ={
           value._1

@@ -3,8 +3,7 @@
   <groupId>com.xiaolin.flink</groupId>
   <artifactId>flink-example</artifactId>
     <version>1.0</version>
-  <inceptionYear>2008</inceptionYear>
-
+  <packaging>jar</packaging>
 
     <repositories>       <!-- Cloudera -->
       <repository>
@@ -33,6 +32,8 @@
   </properties>
 
   <dependencies>
+
+
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-runtime-web_${scala.bin.version}</artifactId>
@@ -65,9 +66,17 @@
     <artifactId>flink-table-planner-blink_${scala.bin.version}</artifactId>
     <version>${flink.version}</version>
   </dependency>
+
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-connector-jdbc_${scala.bin.version}</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+
+    <!--hive1.1.0-->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-table-api-java-bridge_2.11</artifactId>
       <version>${flink.version}</version>
     </dependency>
   <dependency>
@@ -75,22 +84,79 @@
     <artifactId>flink-connector-hive_${scala.bin.version}</artifactId>
     <version>${flink.version}</version>
   </dependency>
+
+<!--    引用hive-exec 使用的 org.apache.commons:commons-compress是1.4.1 csv 中用的是1.20-->
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-exec</artifactId>
+      <version>${hive.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>guava</artifactId>
+          <groupId>com.google.guava</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>27.0-jre</version>
+    </dependency>
+
   <dependency>
     <groupId>org.apache.flink</groupId>
     <artifactId>flink-sql-connector-kafka_${scala.bin.version}</artifactId>
     <version>${flink.version}</version>
   </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-elasticsearch7_${scala.bin.version}</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-cep-scala_${scala.bin.version}</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-client</artifactId>
+      <version>${hadoop.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>guava</artifactId>
+          <groupId>com.google.guava</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
 
 
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-connector-hbase_2.11</artifactId>
+      <artifactId>flink-connector-hbase_${scala.bin.version}</artifactId>
       <version>${flink.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>guava</artifactId>
+          <groupId>com.google.guava</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.bahir</groupId>
-      <artifactId>flink-connector-redis_2.11</artifactId>
+      <artifactId>flink-connector-redis_${scala.bin.version}</artifactId>
       <version>1.0</version>
     </dependency>
             <!--csv json-->
@@ -99,18 +165,19 @@
       <artifactId>flink-json</artifactId>
       <version>${flink.version}</version>
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.apache.flink</groupId>-->
+<!--      <artifactId>flink-csv</artifactId>-->
+<!--      <version>${flink.version}</version>-->
+<!--    </dependency>-->
+
+    <!-- Flink-CDC -->
     <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-csv</artifactId>
-      <version>${flink.version}</version>
+      <groupId>com.alibaba.ververica</groupId>
+      <artifactId>flink-connector-mysql-cdc</artifactId>
+      <version>1.1.0</version>
     </dependency>
 
-
-    <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-client</artifactId>
-      <version>${hadoop.version}</version>
-    </dependency>
 
 
 <!--     https://mvnrepository.com/artifact/org.scalikejdbc/scalikejdbc-->
@@ -142,6 +209,12 @@
       <groupId>org.apache.hbase</groupId>
       <artifactId>hbase-client</artifactId>
       <version>${hbase.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>guava</artifactId>
+          <groupId>com.google.guava</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
@@ -154,4 +227,44 @@
 
   </dependencies>
 
+  <build>
+    <plugins>
+      <!-- 在maven项目中既有java又有scala代码时配置 maven-scala-plugin 插件打包时可以将两类代码一起打包 -->
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <version>2.15.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+<!--      &lt;!&ndash; maven 打jar包需要插件 &ndash;&gt;-->
+<!--      <plugin>-->
+<!--        <artifactId>maven-assembly-plugin</artifactId>-->
+<!--        <version>2.4</version>-->
+<!--        <configuration>-->
+<!--          &lt;!&ndash; 设置false后是去掉 MySpark-1.0-SNAPSHOT-jar-with-dependencies.jar 后的 “-jar-with-dependencies” &ndash;&gt;-->
+<!--          <appendAssemblyId>false</appendAssemblyId>-->
+<!--          <descriptorRefs>-->
+<!--            <descriptorRef>jar-with-dependencies</descriptorRef>-->
+<!--          </descriptorRefs>-->
+<!--        </configuration>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>make-assembly</id>-->
+<!--            <phase>package</phase>-->
+<!--            <goals>-->
+<!--              <goal>assembly</goal>-->
+<!--            </goals>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
+    </plugins>
+  </build>
 </project>

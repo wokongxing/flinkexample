@@ -50,9 +50,11 @@ public class HotWordApp {
             public void run(SourceContext<Tuple2<String,Long>> ctx) throws Exception {
                 Random random = new Random();
                 while (isruning){
+
                     int i = random.nextInt(4);
 
-                    ctx.collect(new Tuple2<String,Long>(list.get(i), time.get(i) * random.nextInt(1000) ) );
+                    ctx.collect(new Tuple2<String,Long>(list.get(i), 1L) );
+                    Thread.sleep(5000);
                 }
 
             }
@@ -99,9 +101,10 @@ public class HotWordApp {
                 keywordState.entries().forEach(x->{
                     String key = x.getKey();
                     Long value = x.getValue();
+                    System.out.println(System.currentTimeMillis()+"----------------------------");
                     out.collect(new Tuple2<>(key,value));
                 });
-                keywordState.clear();
+//                keywordState.clear();
             }
 
             }

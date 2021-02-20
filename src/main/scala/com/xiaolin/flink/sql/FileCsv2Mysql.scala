@@ -10,7 +10,7 @@ import org.apache.flink.table.api.bridge.scala.StreamTableEnvironment
  * @author: linzy
  * @create: 2020-12-10 15:18
  **/
-object File2mysql {
+object FileCsv2Mysql {
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
     val tableEnv = StreamTableEnvironment.create(env)

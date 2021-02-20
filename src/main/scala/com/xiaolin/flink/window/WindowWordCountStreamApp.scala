@@ -15,7 +15,7 @@ object WindowWordCountStreamApp {
   @throws[Exception]
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
-    val text = env.socketTextStream("47.114.92.31", 9999)
+    val text = env.socketTextStream("hadoop001", 9999)
 
     val counts = text.flatMap { _.toLowerCase.split("\\W+") filter { _.nonEmpty } }
       .map { (_, 1) }

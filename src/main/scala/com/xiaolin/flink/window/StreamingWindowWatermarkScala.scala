@@ -1,11 +1,13 @@
 package com.xiaolin.flink.window
 
 import java.text.SimpleDateFormat
+import java.time.Duration
 
+import org.apache.flink.api.common.eventtime.{SerializableTimestampAssigner, WatermarkStrategy}
 import org.apache.flink.api.java.tuple.Tuple
 import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.functions.AssignerWithPeriodicWatermarks
-import org.apache.flink.streaming.api.scala.{DataStream, OutputTag, StreamExecutionEnvironment}
+import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.api.scala.function.WindowFunction
 import org.apache.flink.streaming.api.watermark.Watermark
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows
@@ -30,7 +32,6 @@ import scala.util.Sorting
  * flink,1593421148000
  * flink,1593421134000
  * flink,1593421135000
- *
  * currentThreadId:76,key:flink,eventtime:[1593421135000|2020-06-29 16:58:55.000],currentMaxTimestamp:[1593421135000|2020-06-29 16:58:55.000],watermark:[1593421125000|2020-06-29 16:58:45.000]
  * currentThreadId:76,key:flink,eventtime:[1593421136000|2020-06-29 16:58:56.000],currentMaxTimestamp:[1593421136000|2020-06-29 16:58:56.000],watermark:[1593421126000|2020-06-29 16:58:46.000]
  * currentThreadId:76,key:flink,eventtime:[1593421137000|2020-06-29 16:58:57.000],currentMaxTimestamp:[1593421137000|2020-06-29 16:58:57.000],watermark:[1593421127000|2020-06-29 16:58:47.000]
@@ -50,7 +51,7 @@ object StreamingWindowWatermarkScala {
     val port = 9000
     // 运行环境
     val env = StreamExecutionEnvironment.getExecutionEnvironment
-    import org.apache.flink.api.scala._
+
     // 使用EventTime
     env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
     // 设置并行度为 1,默认并行度是当前机器的 cpu 数量,多并行度时 只有各个节点的watermark均符合条件时才触发窗口计算
@@ -63,6 +64,9 @@ object StreamingWindowWatermarkScala {
       val arr = line.split(",")
       (arr(0), arr(1).toLong)
     })
+
+
+
 
 
     // 抽取 timestamp 和生成 watermark,,将窗口的触发时间延后10s
