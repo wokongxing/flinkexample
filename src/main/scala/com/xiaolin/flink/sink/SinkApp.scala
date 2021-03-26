@@ -2,7 +2,7 @@ package com.xiaolin.flink.sink
 
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.api.scala._
-import org.apache.flink.addons.hbase._
+
 /**
   * 若泽数据  www.ruozedata.com
   * 讲师：PK哥
@@ -11,7 +11,7 @@ import org.apache.flink.addons.hbase._
 object SinkApp {
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
-
+    env.setMaxParallelism(1)
 //    val stream = env.readTextFile("data/access.log").map(x => {
 //      val splits = x.split(",")
 //      Access(splits(0).toLong, splits(1), splits(2).toLong).toString

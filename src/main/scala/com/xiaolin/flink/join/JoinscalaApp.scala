@@ -3,9 +3,10 @@ package com.xiaolin.flink.join
 import org.apache.flink.api.common.state.{ValueState, ValueStateDescriptor}
 import org.apache.flink.api.scala.typeutils.Types
 import org.apache.flink.streaming.api.TimeCharacteristic
-import org.apache.flink.streaming.api.functions.co.KeyedCoProcessFunction
+import org.apache.flink.streaming.api.functions.co.{KeyedCoProcessFunction, ProcessJoinFunction}
 import org.apache.flink.streaming.api.scala.OutputTag
 import org.apache.flink.streaming.api.scala._
+import org.apache.flink.streaming.api.windowing.time.Time
 import org.apache.flink.util.Collector
 /**
  * @program: flink-example
@@ -33,7 +34,7 @@ object JoinscalaApp {
 
     val orders: KeyedStream[OrderEvent, String] = env
       .fromElements(
-        OrderEvent("order_1", "pay", 2000L),
+        OrderEvent("order_1", "pay", 9000L),
         OrderEvent("order_2", "pay", 5000L),
         OrderEvent("order_3", "pay", 6000L),
         OrderEvent("order_6", "pay", 6000L)
@@ -44,16 +45,25 @@ object JoinscalaApp {
     val pays: KeyedStream[PayEvent, String] = env
       .fromElements(
         PayEvent("order_1", "weixin", 7000L),
-        PayEvent("order_2", "weixin", 8000L),
+        PayEvent("order_2", "weixin", 7000L),
         PayEvent("order_4", "weixin", 9000L),
         PayEvent("order_7", "weixin", 6000L)
       )
       .assignAscendingTimestamps(_.eventTime)
       .keyBy(_.orderId)
 
-    val processed = orders.connect(pays).process(new MatchFunction)
+//    val processed = orders.connect(pays).process(new MatchFunction)
 
-    processed.print()
+
+    orders.intervalJoin(pays)
+      .between(Time.seconds(-2), Time.seconds(2))
+        .process(new ProcessJoinFunction[OrderEvent,PayEvent,Tuple3[String,String,String]] {
+          override def processElement(left: OrderEvent, right: PayEvent, ctx: ProcessJoinFunction[OrderEvent, PayEvent, (String, String, String)]#Context, out: Collector[(String, String, String)]): Unit = {
+                out.collect((left.orderId,left.eventTime.toString,right.eventTime.toString))
+          }
+        }).print()
+
+//    processed.print()
 //
 //    processed.getSideOutput(unmatchedOrders).print()
 //

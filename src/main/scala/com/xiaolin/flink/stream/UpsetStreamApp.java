@@ -41,7 +41,7 @@ public class UpsetStreamApp {
 
         tEnv.registerTable("clicks", clicksTable);
         Table rTable = tEnv.sqlQuery("SELECT user,COUNT(url) FROM clicks GROUP BY user");
-        tEnv.registerTableSink("MemoryUpsertSink", new MemoryUpsertSink(rTable.getSchema()));
+//        tEnv.registerTableSink("MemoryUpsertSink", new MemoryUpsertSink(rTable.getSchema()));
 
         env.execute();
     }

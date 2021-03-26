@@ -60,6 +60,8 @@ object LoginFailWithCep {
     // 用 select 方法检出 符合模式的事件序列
     val loginFailDataStream: DataStream[Warning] = patternStream.select(new LoginFailMatch())
 
+
+
     // 将匹配到的符合条件的事件打印出来
     loginFailDataStream.print("恶意登录用户")
     loginEventStream.print("原始数据:")

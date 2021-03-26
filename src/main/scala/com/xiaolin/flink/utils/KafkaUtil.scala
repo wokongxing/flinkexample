@@ -3,6 +3,7 @@ package com.xiaolin.flink.utils
 import java.util.Properties
 import java.util.concurrent.Future
 
+import com.alibaba.fastjson.{JSON, JSONObject}
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord, RecordMetadata}
 import org.apache.kafka.common.serialization.StringSerializer
 
@@ -53,21 +54,27 @@ object KafkaUtil {
 
       val kafkaProducerConfig = {
         val p = new Properties()
-        p.setProperty("bootstrap.servers", "hadoop001:9092,hadoop001:9093")
+        p.setProperty("bootstrap.servers", "hadoop001:9092,hadoop001:9093,hadoop001:9094")
         p.setProperty("key.serializer", classOf[StringSerializer].getName)
         p.setProperty("value.serializer", classOf[StringSerializer].getName)
         p
       }
 
       val productor = KafkaUtil[String, String](kafkaProducerConfig)
-      val domains = Array("xiaolin.com","xiaoxiao.com","xiaozi.com","test.com","wode.com","huawei.com")
+      val domains = Array("11","2","3","4","5","6")
       var ram = new Random()
-      for (a <- 1 to 10){
-        val message = new StringBuffer
-        message.append("ssid"+a).append("\t")
-          .append(domains(ram.nextInt(6)))
-        productor.send("test",message.toString)
+      for (a <- 100 to 150){
+//        val message = new StringBuffer
+//        message.append("ssid"+a).append("\t")
+//          .append(domains(ram.nextInt(6)))
+        val nObject = new JSONObject
+        nObject.put("user_id",a);
+        nObject.put("order_amount",domains(ram.nextInt(6)));
+        nObject.put("log_ts","2020-11-26 04:10:00");
+        productor.send("kafka_table",nObject.toString)
       }
+
+
 
   }
 }

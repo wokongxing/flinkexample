@@ -25,26 +25,26 @@ class HbaseWriterSinkFunction extends RichSinkFunction[String]{
 
   }
 
-  override def invoke(value: String, context: SinkFunction.Context[_]): Unit = {
-      val cf = "user"
-      val split = value.split(",")
-      val rowkey = new StringBuffer(split(0)).reverse().toString+"_"+split(1)
-      var count=0
-
-      val put = new Put(Bytes.toBytes(rowkey))
-      put.addColumn(Bytes.toBytes(cf),Bytes.toBytes("phone"),Bytes.toBytes(split(0)))
-      put.addColumn(Bytes.toBytes(cf),Bytes.toBytes("name"),Bytes.toBytes(split(1)))
-      put.addColumn(Bytes.toBytes(cf),Bytes.toBytes("age"),Bytes.toBytes(split(2)))
-      put.addColumn(Bytes.toBytes(cf),Bytes.toBytes("sex"),Bytes.toBytes(split(3)))
-      mutator.mutate(put)
-
-      //if (count==2000){//满足2000条 刷新到hbase
-        mutator.flush()
-       // count=0
-      //}
-
-      count=count+1
-  }
+//  override def invoke(value: String, context: SinkFunction.Context[_]): Unit = {
+//      val cf = "user"
+//      val split = value.split(",")
+//      val rowkey = new StringBuffer(split(0)).reverse().toString+"_"+split(1)
+//      var count=0
+//
+//      val put = new Put(Bytes.toBytes(rowkey))
+//      put.addColumn(Bytes.toBytes(cf),Bytes.toBytes("phone"),Bytes.toBytes(split(0)))
+//      put.addColumn(Bytes.toBytes(cf),Bytes.toBytes("name"),Bytes.toBytes(split(1)))
+//      put.addColumn(Bytes.toBytes(cf),Bytes.toBytes("age"),Bytes.toBytes(split(2)))
+//      put.addColumn(Bytes.toBytes(cf),Bytes.toBytes("sex"),Bytes.toBytes(split(3)))
+//      mutator.mutate(put)
+//
+//      //if (count==2000){//满足2000条 刷新到hbase
+//        mutator.flush()
+//       // count=0
+//      //}
+//
+//      count=count+1
+//  }
 
   override def close(): Unit = {
     HbaseUtil.close()

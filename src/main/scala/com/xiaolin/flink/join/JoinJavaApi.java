@@ -91,24 +91,24 @@ public class JoinJavaApi {
             }
         });
 
-//        stream1.connect(stream2).flatMap(new RichCoFlatMapFunction<Joinobject, Joinobject, Object>() {
-//
-//            @Override
-//            public void flatMap1(Joinobject value, Collector<Object> out) throws Exception {
-//                out.collect(new Tuple2("log1:"+value.domain+"--"+value.getValue(),000000000));
-//            }
-//
-//            @Override
-//            public void flatMap2(Joinobject value, Collector<Object> out) throws Exception {
-//                out.collect(new Tuple1("log2:"+value.domain+"--"+value.getValue()));
-//            }
-//
-//            @Override
-//            public void open(Configuration parameters) throws Exception {
-//                super.open(parameters);
-//            }
-//
-//        }).print();
+        stream1.connect(stream2).flatMap(new RichCoFlatMapFunction<Joinobject, Joinobject, Object>() {
+
+            @Override
+            public void flatMap1(Joinobject value, Collector<Object> out) throws Exception {
+                out.collect(new Tuple2("log1:"+value.domain+"--"+value.getValue(),000000000));
+            }
+
+            @Override
+            public void flatMap2(Joinobject value, Collector<Object> out) throws Exception {
+                out.collect(new Tuple1("log2:"+value.domain+"--"+value.getValue()));
+            }
+
+            @Override
+            public void open(Configuration parameters) throws Exception {
+                super.open(parameters);
+            }
+
+        }).print();
 
 //        stream1.connect(stream2).process(new KeyedCoProcessFunction<Object, Joinobject, Joinobject, Object>() {
 //            @Override
@@ -124,6 +124,7 @@ public class JoinJavaApi {
 //
 //            }
 //        });
+
         //join 仅有在当前窗口内符合条件的数据输出
 //        流2生成数据:Joinobject{domain=8, value=8, remark='流2'}
 //        流1生成数据:Joinobject{domain=2, value=2, remark='流1'}
@@ -150,6 +151,7 @@ public class JoinJavaApi {
 //                        return new Tuple2(first.domain,first.remark+second.remark);
 //                    }
 //                }).print();
+
         //coGroup 不管双流是否符合 均输出 可通过first second 不同的比较,实现leftjoin rightjoin
 //        stream1.coGroup(stream2).where(new KeySelector<Joinobject, Object>() {
 //            @Override
@@ -182,24 +184,24 @@ public class JoinJavaApi {
 //                    }
 //                }).print();
 
-        stream1.keyBy(new KeySelector<Joinobject, Object>() {
-
-            @Override
-            public Object getKey(Joinobject value) throws Exception {
-                return value.getDomain();
-            }
-        }).process(new KeyedProcessFunction<Object, Joinobject, Object>() {
-
-            @Override
-            public void processElement(Joinobject value, Context ctx, Collector<Object> out) throws Exception {
-
-            }
-
-            @Override
-            public void onTimer(long timestamp, OnTimerContext ctx, Collector<Object> out) throws Exception {
-                super.onTimer(timestamp, ctx, out);
-            }
-        });
+//        stream1.keyBy(new KeySelector<Joinobject, Object>() {
+//
+//            @Override
+//            public Object getKey(Joinobject value) throws Exception {
+//                return value.getDomain();
+//            }
+//        }).process(new KeyedProcessFunction<Object, Joinobject, Object>() {
+//
+//            @Override
+//            public void processElement(Joinobject value, Context ctx, Collector<Object> out) throws Exception {
+//
+//            }
+//
+//            @Override
+//            public void onTimer(long timestamp, OnTimerContext ctx, Collector<Object> out) throws Exception {
+//                super.onTimer(timestamp, ctx, out);
+//            }
+//        });
 
         try {
             env.execute("join");

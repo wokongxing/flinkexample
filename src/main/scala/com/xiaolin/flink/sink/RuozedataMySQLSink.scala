@@ -25,22 +25,22 @@ class RuozedataMySQLSink extends RichSinkFunction[(String,Double)]{
     updatePstmt = connection.prepareStatement("update ruozedata_traffic set traffic=? where domain=?")
   }
 
-  /**
-    * 写数据
-    */
-  override def invoke(value: (String, Double), context: SinkFunction.Context[_]): Unit = {
-    // TODO   insert update
-
-    updatePstmt.setDouble(1, value._2)
-    updatePstmt.setString(2, value._1)
-    updatePstmt.execute()
-
-    if(updatePstmt.getUpdateCount == 0) {
-      insertPstmt.setString(1, value._1)
-      insertPstmt.setDouble(2, value._2)
-      insertPstmt.execute()
-    }
-  }
+//  /**
+//    * 写数据
+//    */
+//  override def invoke(value: (String, Double), context: SinkFunction.Context[_]): Unit = {
+//    // TODO   insert update
+//
+//    updatePstmt.setDouble(1, value._2)
+//    updatePstmt.setString(2, value._1)
+//    updatePstmt.execute()
+//
+//    if(updatePstmt.getUpdateCount == 0) {
+//      insertPstmt.setString(1, value._1)
+//      insertPstmt.setDouble(2, value._2)
+//      insertPstmt.execute()
+//    }
+//  }
 
 
   // 释放资源
